@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#FAFAF9] text-zinc-900">
         {children}
+        <Analytics />
       </body>
     </html>
   );
