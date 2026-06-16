@@ -73,7 +73,7 @@ export default function Home() {
             {/* Text */}
             <div className="flex flex-1 flex-col items-start gap-6">
               <span className="rounded-full bg-zinc-100 px-5 py-1.5 text-sm font-semibold text-zinc-500">
-                Coming soon
+                iOS app — coming soon
               </span>
               <h1 className="text-5xl font-extrabold leading-[1.1] sm:text-6xl">
                 Build a{" "}
@@ -88,7 +88,7 @@ export default function Home() {
               </p>
               <WishlistForm />
               <p className="text-sm text-zinc-400">
-                No spam — just a heads-up when we launch.
+                No spam — just a heads-up when the iOS app launches.
               </p>
             </div>
 
@@ -199,10 +199,10 @@ export default function Home() {
               />
             </div>
             <h2 className="max-w-2xl text-3xl font-extrabold tracking-tight sm:text-5xl">
-              Be the first to try the diet companion that actually gets it.
+              Join others and be among the first to try the diet companion that actually gets it.
             </h2>
             <p className="max-w-md text-lg leading-relaxed text-zinc-400">
-              Join the wishlist and we&apos;ll reach out the moment Rally is ready —
+              Join the wishlist and we&apos;ll reach out the moment the iOS app is ready —
               built for people who want to stick to their goals without the guilt.
             </p>
             <WishlistForm variant="dark" />
