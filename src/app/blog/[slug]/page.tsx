@@ -33,6 +33,7 @@ export async function generateMetadata({
     title: `${post.title} — Rally Blog`,
     description: post.excerpt,
     keywords: post.keywords,
+    alternates: { canonical: `/blog/${post.slug}` },
   };
 }
 
@@ -45,8 +46,24 @@ export default async function BlogPost({
   const post = getPost(slug);
   if (!post) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    keywords: post.keywords.join(", "),
+    author: { "@type": "Organization", name: "Rally" },
+    publisher: { "@type": "Organization", name: "Rally" },
+    mainEntityOfPage: `https://rallywell.co/blog/${post.slug}`,
+  };
+
   return (
     <div className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2.5">
           <Image

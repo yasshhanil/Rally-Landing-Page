@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import WishlistForm from "@/components/WishlistForm";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const principles = [
   {

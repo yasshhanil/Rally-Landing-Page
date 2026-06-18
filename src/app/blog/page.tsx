@@ -6,6 +6,7 @@ import { posts } from "@/lib/posts";
 export const metadata: Metadata = {
   title: "Blog — Rally",
   description: "Practical, no-guilt advice on staying consistent with your diet.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogIndex() {

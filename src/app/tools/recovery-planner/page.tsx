@@ -7,11 +7,28 @@ export const metadata: Metadata = {
   title: "Overeating Recovery Tool — Rally",
   description:
     "Had a heavier day than planned? See exactly how to ease back on track — no guilt, just a simple plan.",
+  alternates: { canonical: "/tools/recovery-planner" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Overeating Recovery Tool",
+  applicationCategory: "HealthApplication",
+  operatingSystem: "Any",
+  description:
+    "A free tool that turns a heavier-than-planned day into a simple, no-guilt recovery plan — lighter next meals, a short walk, or a small carry-over, based on how far over your target you are.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  url: "https://rallywell.co/tools/recovery-planner",
 };
 
 export default function RecoveryPlannerPage() {
   return (
     <div className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
