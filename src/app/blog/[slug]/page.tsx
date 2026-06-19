@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPost, posts } from "@/lib/posts";
+import Footer from "@/components/Footer";
 
 function PostLink({ slug }: { slug: string }) {
   const post = getPost(slug);
@@ -94,7 +95,8 @@ export default async function BlogPost({
               year: "numeric",
               month: "long",
               day: "numeric",
-            })}
+            })}{" "}
+            · By the Rally team
           </p>
           <h1 className="mt-3 text-4xl font-extrabold leading-tight sm:text-5xl">
             {post.title}
@@ -176,11 +178,7 @@ export default async function BlogPost({
         </article>
       </main>
 
-      <footer className="border-t border-zinc-200 px-6 py-8">
-        <p className="mx-auto max-w-5xl text-sm font-medium text-zinc-400">
-          Rally — built for adherence, not perfection.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

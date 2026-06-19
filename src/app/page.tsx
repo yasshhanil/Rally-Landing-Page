@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import WishlistForm from "@/components/WishlistForm";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -215,11 +216,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-zinc-200 px-6 py-8">
-        <p className="mx-auto max-w-5xl text-sm font-medium text-zinc-400">
-          Rally — built for adherence, not perfection.
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }
