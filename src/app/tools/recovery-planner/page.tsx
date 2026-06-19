@@ -19,7 +19,7 @@ const jsonLd = {
   description:
     "A free tool that turns a heavier-than-planned day into a simple, no-guilt recovery plan — lighter next meals, a short walk, or a small carry-over, based on how far over your target you are.",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  url: "https://rallywell.co/tools/recovery-planner",
+  url: "https://www.rallywell.co/tools/recovery-planner",
 };
 
 export default function RecoveryPlannerPage() {

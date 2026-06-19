@@ -55,7 +55,7 @@ export default async function BlogPost({
     keywords: post.keywords.join(", "),
     author: { "@type": "Organization", name: "Rally" },
     publisher: { "@type": "Organization", name: "Rally" },
-    mainEntityOfPage: `https://rallywell.co/blog/${post.slug}`,
+    mainEntityOfPage: `https://www.rallywell.co/blog/${post.slug}`,
   };
 
   return (

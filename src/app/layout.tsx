@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
   weight: ["700", "800"],
 });
 
-const SITE_URL = "https://rallywell.co";
+const SITE_URL = "https://www.rallywell.co";
 const SITE_DESCRIPTION =
   "A mascot-powered diet companion that helps you recover from off-plan moments instead of just tracking them. Join the wishlist for early access.";
 
