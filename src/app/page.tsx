@@ -49,23 +49,23 @@ export default function Home() {
   return (
     <div className="flex flex-1 flex-col">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
           <Image
             src="/mascot/Logo.jpg"
             alt="Rally logo"
             width={100}
             height={100}
-            className="rounded-full"
+            className="h-9 w-9 rounded-full sm:h-[72px] sm:w-[72px]"
           />
-          <span className="text-5xl font-bold tracking-tight">Rally</span>
+          <span className="text-xl font-bold tracking-tight sm:text-4xl">Rally</span>
         </div>
-        <nav className="flex items-center gap-5">
+        <nav className="flex items-center gap-3 sm:gap-5">
           <Link href="/blog" className="text-sm font-semibold text-zinc-500 transition-colors hover:text-black">
             Blog
           </Link>
           <a
             href="#wishlist"
-            className="rounded-full border-2 border-black px-5 py-2 text-sm font-bold transition-colors hover:bg-black hover:text-white"
+            className="rounded-full border-2 border-black px-4 py-2 text-sm font-bold transition-colors hover:bg-black hover:text-white sm:px-5"
           >
             Join the wishlist
           </a>
