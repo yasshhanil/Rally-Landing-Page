@@ -5,6 +5,54 @@ import { notFound } from "next/navigation";
 import { getPost, posts } from "@/lib/posts";
 import Footer from "@/components/Footer";
 
+const INLINE_PATTERN = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
+
+function renderInline(text: string) {
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let key = 0;
+  for (const match of text.matchAll(INLINE_PATTERN)) {
+    if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
+    const [, bold, linkLabel, linkHref] = match;
+    if (bold !== undefined) {
+      nodes.push(
+        <strong key={key++} className="font-semibold text-zinc-900">
+          {bold}
+        </strong>
+      );
+    } else if (linkHref?.startsWith("/")) {
+      nodes.push(
+        <Link
+          key={key++}
+          href={linkHref}
+          className="font-semibold text-zinc-900 underline underline-offset-2 hover:text-zinc-600"
+        >
+          {linkLabel}
+        </Link>
+      );
+    } else if (linkHref) {
+      nodes.push(
+        <a
+          key={key++}
+          href={linkHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-zinc-900 underline underline-offset-2 hover:text-zinc-600"
+        >
+          {linkLabel}
+        </a>
+      );
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+  return nodes;
+}
+
+function toPlainText(text: string): string {
+  return text.replace(INLINE_PATTERN, (_match, bold, linkLabel) => bold ?? linkLabel ?? "");
+}
+
 function PostLink({ slug }: { slug: string }) {
   const post = getPost(slug);
   if (!post) return null;
@@ -59,12 +107,31 @@ export default async function BlogPost({
     mainEntityOfPage: `https://www.rallywell.co/blog/${post.slug}`,
   };
 
+  const faqBlock = post.content.find((block) => block.type === "faq");
+  const faqJsonLd = faqBlock
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqBlock.items.map((item) => ({
+          "@type": "Question",
+          name: toPlainText(item.q),
+          acceptedAnswer: { "@type": "Answer", text: toPlainText(item.a) },
+        })),
+      }
+    : null;
+
   return (
     <div className="flex flex-1 flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
@@ -105,19 +172,73 @@ export default async function BlogPost({
           <div className="mt-10 flex flex-col gap-6 text-lg leading-relaxed text-zinc-600">
             {post.content.map((block, i) => {
               switch (block.type) {
+                case "p":
+                  return <p key={i}>{renderInline(block.text)}</p>;
                 case "h2":
                   return (
                     <h2 key={i} className="mt-4 text-2xl font-bold text-zinc-900">
                       {block.text}
                     </h2>
                   );
+                case "h3":
+                  return (
+                    <h3 key={i} className="mt-2 text-xl font-bold text-zinc-900">
+                      {block.text}
+                    </h3>
+                  );
                 case "ol":
                   return (
                     <ol key={i} className="list-decimal space-y-4 pl-6 text-zinc-600">
                       {block.items.map((item, j) => (
-                        <li key={j} className="leading-relaxed">{item}</li>
+                        <li key={j} className="leading-relaxed">{renderInline(item)}</li>
                       ))}
                     </ol>
+                  );
+                case "table":
+                  return (
+                    <div
+                      key={i}
+                      className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white shadow-sm"
+                    >
+                      <table className="w-full text-left text-base">
+                        <thead className="bg-zinc-50">
+                          <tr>
+                            {block.headers.map((header, j) => (
+                              <th key={j} className="px-5 py-3 font-semibold text-zinc-900">
+                                {header}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-100">
+                          {block.rows.map((row, j) => (
+                            <tr key={j}>
+                              {row.map((cell, k) => (
+                                <td key={k} className="px-5 py-3 align-top text-zinc-600">
+                                  {renderInline(cell)}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                case "faq":
+                  return (
+                    <div
+                      key={i}
+                      className="flex flex-col divide-y divide-zinc-100 rounded-2xl border border-zinc-200 bg-white shadow-sm"
+                    >
+                      {block.items.map((item, j) => (
+                        <div key={j} className="p-5">
+                          <p className="font-semibold text-zinc-900">{item.q}</p>
+                          <p className="mt-2 leading-relaxed text-zinc-600">
+                            {renderInline(item.a)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   );
                 case "cta":
                   return (
@@ -145,8 +266,6 @@ export default async function BlogPost({
                       </div>
                     </div>
                   );
-                default:
-                  return <p key={i}>{block.text}</p>;
               }
             })}
           </div>
